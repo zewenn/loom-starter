@@ -3,7 +3,7 @@ const std = @import("std");
 const fs = std.fs;
 const Allocator = std.mem.Allocator;
 
-const app_name = "loom_starter";
+const exe_name = "loom_starter";
 const debug_asset_path = "src/assets/";
 const release_asset_path = "assets/";
 
@@ -52,8 +52,9 @@ pub fn build(b: *std.Build) !void {
     }
 
     const exe = b.addExecutable(.{
-        .name = app_name,
+        .name = exe_name,
         .root_module = exe_mod,
+        .use_llvm = true,
     });
 
     b.installArtifact(exe);

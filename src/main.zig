@@ -14,8 +14,6 @@ pub fn main() void {
             .release = build_defs.LOOM_RELEASE_ASSET_PATH,
         },
     })({
-        std.log.debug("{s}", .{loom.assets.files.paths.debug});
-
         loom.scene("default")({
             loom.prefabs(&.{
                 try prefabs.MissingNo(.init(0, 0)),
