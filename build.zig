@@ -28,24 +28,26 @@ pub fn build(b: *std.Build) !void {
 
     exe_mod.addImport("loom", loom_mod);
 
-    if (optimize != .Debug) {
-        const cwd = try fs.realpathAlloc(std.heap.smp_allocator, ".");
-        defer std.heap.smp_allocator.free(cwd);
+    var arena = std.heap.ArenaAllocator.init(std.heap.smp_allocator);
+    defer arena.deinit();
 
-        const src_path = try fs.path.join(std.heap.smp_allocator, &.{
+    const alloc = arena.allocator();
+
+    if (optimize != .Debug) {
+        const cwd = try fs.realpathAlloc(alloc, ".");
+
+        const src_path = try fs.path.join(alloc, &.{
             cwd,
             debug_asset_path,
         });
-        defer std.heap.smp_allocator.free(src_path);
 
-        const dest_path = try fs.path.join(std.heap.smp_allocator, &.{
+        const dest_path = try fs.path.join(alloc, &.{
             cwd,
             "zig-out/bin/" ++ release_asset_path,
         });
-        defer std.heap.smp_allocator.free(src_path);
 
         try copyDir(
-            std.heap.smp_allocator,
+            alloc,
             src_path,
             dest_path,
         );

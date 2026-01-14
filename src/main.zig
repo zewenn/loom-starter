@@ -15,6 +15,8 @@ pub fn main() void {
         },
     })({
         loom.scene("default")({
+            loom.useMainCamera();
+
             loom.prefabs(&.{
                 try prefabs.MissingNo(.init(0, 0)),
             });
